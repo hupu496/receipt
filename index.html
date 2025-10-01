@@ -449,6 +449,19 @@ document.getElementById('generatePdfBtn').addEventListener('click', generatePDF)
 
 
     <script>
+const apiUrl = "https://script.google.com/macros/s/AKfycbyAMCYK_GVRoFfDmHPU1MaqlV5_TTF2nhJ1cXamoo-heIZu0RKMnq-dY7YQGVpb-yUu5Q/exec";
+
+function fetchReceipts() {
+    fetch(apiUrl)
+        .then(res => res.json())
+        .then(data => {
+            localStorage.setItem('receipts', JSON.stringify(data)); // optional cache
+            updateDataTable(data);
+        })
+        .catch(err => {
+            console.error("Error fetching data:", err);
+        });
+}
         // Set default date to today
         document.getElementById('date').valueAsDate = new Date();
         
@@ -530,80 +543,90 @@ document.getElementById('generatePdfBtn').addEventListener('click', generatePDF)
    
         
         // Update data table with saved receipts
-        function updateDataTable() {
-            const tableBody = document.getElementById('receiptTableBody');
-            tableBody.innerHTML = '';
-            
-            const receipts = JSON.parse(localStorage.getItem('receipts')) || [];
-            
-            if (receipts.length === 0) {
-                const row = document.createElement('tr');
-                row.innerHTML = `<td colspan="9" class="text-center">No receipts saved yet</td>`;
-                tableBody.appendChild(row);
-                return;
-            }
-            
-            receipts.forEach((receipt, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${receipt.id || 'N/A'}</td>
-                    <td>${receipt.date || 'N/A'}</td>
-                    <td>${receipt.from || 'N/A'}</td>
-                    <td>$${receipt.amount || '0.00'}</td>
-                    <td>${receipt.purpose || 'N/A'}</td>
-                    <td>$${receipt.account || '0.00'}</td>
-                    <td>$${receipt.paid || '0.00'}</td>
-                    <td>$${receipt.due || '0.00'}</td>
-                    <td>
-                        <button class="btn btn-sm btn-info view-btn" data-index="${index}">View</button>
-                        <button class="btn btn-sm btn-danger delete-btn" data-index="${index}">Delete</button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-            
-            // Add event listeners to view buttons
-            document.querySelectorAll('.view-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    const index = this.getAttribute('data-index');
-                    viewReceipt(index);
-                });
-            });
-            
-            // Add event listeners to delete buttons
-            document.querySelectorAll('.delete-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    const index = this.getAttribute('data-index');
-                    deleteReceipt(index);
-                });
-            });
-        }
+       function updateDataTable(receipts) {
+    const tableBody = document.getElementById('receiptTableBody');
+    tableBody.innerHTML = '';
+
+    if (!receipts || receipts.length === 0) {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td colspan="9" class="text-center">No receipts available</td>`;
+        tableBody.appendChild(row);
+        return;
+    }
+
+    receipts.forEach((receipt, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${receipt.id || 'N/A'}</td>
+            <td>${receipt.date || 'N/A'}</td>
+            <td>${receipt.from || 'N/A'}</td>
+            <td>₹${receipt.amount || '0.00'}</td>
+            <td>${receipt.purpose || 'N/A'}</td>
+            <td>${receipt.acct || 'N/A'}</td>
+            <td>₹${receipt.paid || '0.00'}</td>
+            <td>₹${receipt.due || '0.00'}</td>
+            <td>
+                <button class="btn btn-sm btn-info view-btn" data-index="${index}">View</button>
+                <button class="btn btn-sm btn-danger delete-btn" data-index="${index}">Delete</button>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+
+    // Attach events
+    document.querySelectorAll('.view-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const index = this.getAttribute('data-index');
+            viewReceipt(receipts[index]);
+        });
+    });
+
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            this.closest("tr").remove();
+        });
+    });
+}
+
         
         // View receipt details
-        function viewReceipt(index) {
-            const receipts = JSON.parse(localStorage.getItem('receipts')) || [];
-            const receipt = receipts[index];
-            
-            // Fill form with receipt data
-            document.getElementById('receiptId').value = receipt.id || '';
-            document.getElementById('date').value = receipt.date || '';
-            document.getElementById('receivedFrom').value = receipt.from || '';
-            document.getElementById('amount').value = receipt.amount || '';
-            document.getElementById('amountInWords').value = receipt.words || '';
-            document.getElementById('purpose').value = receipt.purpose || '';
-            document.getElementById('branch').value = receipt.branch || '';
-            document.getElementById('service').value = receipt.service || '';
-            document.getElementById('account').value = receipt.account || '';
-            document.getElementById('paid').value = receipt.paid || '';
-            document.getElementById('due').value = receipt.due || '';
-            document.getElementById('receivedBy').value = receipt.receivedBy || '';
-            
-            // Update preview
-            updatePreview();
-            
-            // Scroll to form
-            document.querySelector('.form-container').scrollIntoView({ behavior: 'smooth' });
-        }
+       function viewReceipt(receipt) {
+    // Fill receipt preview dynamically
+    document.getElementById("previewId").innerText = receipt.id || "N/A";
+    document.getElementById("previewDate").innerText = receipt.date || "N/A";
+    document.getElementById("previewFrom").innerText = receipt.from || "N/A";
+    document.getElementById("previewAmount").innerText = "₹" + (receipt.amount || "0.00");
+    document.getElementById("previewWords").innerText = receipt.words || "N/A";
+    document.getElementById("previewPurpose").innerText = receipt.purpose || "N/A";
+    document.getElementById("previewBranch").innerText = receipt.branch || "N/A";
+    document.getElementById("previewAcct").innerText = receipt.acct || "N/A";
+    document.getElementById("previewPaid").innerText = "₹" + (receipt.paid || "0.00");
+    document.getElementById("previewDue").innerText = "₹" + (receipt.due || "0.00");
+    document.getElementById("previewPaidAmount").innerText = "₹" + (receipt.paid || "0.00");
+    document.getElementById("previewReceivedBy").innerText = receipt.receivedBy || "Admin";
+
+    // After filling → auto-generate PDF
+    generatePDFs(receipt.id);
+}
+
+function generatePDFs(receiptId) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('p', 'mm', 'a4');
+    const receiptElement = document.getElementById('receiptPreview');
+
+    html2canvas(receiptElement, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: null
+    }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const imgHeight = canvas.height * pageWidth / canvas.width;
+        doc.addImage(imgData, 'PNG', 0, 10, pageWidth, imgHeight);
+        doc.save("receipt_" + (receiptId || Date.now()) + ".pdf");
+    });
+}
+
         
         // Delete receipt
         function deleteReceipt(index) {
@@ -653,6 +676,11 @@ document.getElementById('generatePdfBtn').addEventListener('click', generatePDF)
         }
         return words + " Only";
     }
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    fetchReceipts(); // Fetch and display
+});
 </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </body>
