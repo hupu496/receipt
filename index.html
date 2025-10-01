@@ -39,26 +39,38 @@
             margin-bottom: 30px;
         }
         
-        .receipt-preview {
-            border: 1px solid #ddd;
-            padding: 25px;
-            background-color: white;
-            min-height: 500px;
-            font-family: 'Courier New', monospace;
-            position: relative;
-        }
+      .receipt-preview {
+    border: 1px solid #3a2617;
+    padding: 25px;
+    min-height: 500px;
+    font-family: 'Courier New', monospace;
+    position: relative;
+
+    /* New background design */
+    background: linear-gradient(135deg, #dfb55e 20%, #fff8e1 60%, #3a2617 100%);
+    background-size: cover;
+    color: #2c1b0f;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+}
+
         
         .receipt-header {
-            text-align: center;
-            margin-bottom: 20px;
-            border-bottom: 2px dashed #ddd;
-            padding-bottom: 15px;
-        }
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 2px dashed #3a2617;
+    padding-bottom: 15px;
+    font-weight: 800;
+    background: rgba(58, 38, 23, 0.08);
+    border-radius: 6px;
+}
+
         
         .receipt-logo {
             font-weight: bold;
             font-size: 24px;
             margin-bottom: 5px;
+            
         }
         
         .receipt-contact {
@@ -81,22 +93,26 @@
             display: flex;
         }
         
-        .receipt-label {
-            font-weight: bold;
-            min-width: 180px;
-        }
-        
+       .receipt-label {
+    font-weight: bold;
+    min-width: 180px;
+    color: #3a2617;
+}
+
+/* Signature styling */
+.receipt-signature {
+    text-align: right;
+    margin-top: 50px;
+    font-weight: bold;
+    color: #3a2617;
+}
         .receipt-amount-section {
             margin-top: 30px;
             border-top: 1px dashed #ddd;
             padding-top: 15px;
         }
         
-        .receipt-signature {
-            text-align: center;
-            margin-top: 50px;
-            font-weight: bold;
-        }
+       
         
         .form-section {
             margin-bottom: 20px;
@@ -156,86 +172,86 @@
             <div class="col-lg-6">
                 <div class="form-container">
                     <h3 class="mb-4">Receipt Details</h3>
-                    <form id="receiptForm">
+                    <form action="https://script.google.com/macros/s/AKfycbyAMCYK_GVRoFfDmHPU1MaqlV5_TTF2nhJ1cXamoo-heIZu0RKMnq-dY7YQGVpb-yUu5Q/exec" method="post" id="receiptForm">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-section">
                                     <label for="receiptId" class="form-label">Receipt Number</label>
-                                    <input type="text" class="form-control" id="receiptId" placeholder="Enter receipt number">
+                                    <input type="text" class="form-control" id="receiptId" name="id" placeholder="Enter receipt number">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-section">
                                     <label for="date" class="form-label">Date</label>
-                                    <input type="date" class="form-control" id="date">
+                                    <input type="date" class="form-control" id="date" name="date">
                                 </div>
                             </div>
                         </div>
                         
                         <div class="form-section">
                             <label for="receivedFrom" class="form-label">Received From</label>
-                            <input type="text" class="form-control" id="receivedFrom" placeholder="Enter name">
+                            <input type="text" class="form-control" id="receivedFrom" name="receivedfrom" placeholder="Enter name">
                         </div>
                         
-                        <div class="form-section">
+                       <div class="form-section">
                             <label for="amount" class="form-label">Amount</label>
-                            <input type="number" class="form-control" id="amount" placeholder="0.00" step="0.01">
+                            <input type="number" class="form-control" id="amount"name="amount" placeholder="0.00" step="0.01">
                         </div>
-                        
+
                         <div class="form-section">
                             <label for="amountInWords" class="form-label">Amount in Words</label>
-                            <textarea class="form-control" id="amountInWords" rows="2" placeholder="Enter amount in words"></textarea>
+                            <textarea class="form-control" id="amountInWords" rows="2" name="amountword"placeholder="Enter amount in words"></textarea>
                         </div>
-                        
+                                                
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-section">
-                                    <label for="purpose" class="form-label">For (Purpose)</label>
-                                    <input type="text" class="form-control" id="purpose" placeholder="Enter purpose">
+                                    <label for="purpose" class="form-label">Service (Purpose)</label>
+                                    <input type="text" class="form-control" id="purpose" name="purpose" placeholder="Enter purpose">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-section">
                                     <label for="branch" class="form-label">Branch</label>
-                                    <input type="text" class="form-control" id="branch" placeholder="Enter branch">
+                                    <input type="text" class="form-control" id="branch" name="branch" placeholder="Enter branch">
                                 </div>
                             </div>
                         </div>
                         
                         <div class="form-section">
                             <label for="service" class="form-label">Service</label>
-                            <input type="text" class="form-control" id="service" placeholder="Enter service">
+                            <input type="text" class="form-control" id="service" name="service" placeholder="Enter service">
                         </div>
                         
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-section">
                                     <label for="account" class="form-label">Account (ACCT)</label>
-                                    <input type="number" class="form-control" id="account" placeholder="0.00" step="0.01">
+                                    <input type="number" class="form-control" id="account" name="acctamount" placeholder="0.00" step="0.01">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-section">
                                     <label for="paid" class="form-label">Paid</label>
-                                    <input type="number" class="form-control" id="paid" placeholder="0.00" step="0.01">
+                                    <input type="number" class="form-control" id="paid" name="paid" placeholder="0.00" step="0.01">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-section">
                                     <label for="due" class="form-label">Due</label>
-                                    <input type="number" class="form-control" id="due" placeholder="0.00" step="0.01" readonly>
+                                    <input type="number" class="form-control" id="due" name="due" placeholder="0.00" step="0.01" readonly>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="form-section">
                             <label for="receivedBy" class="form-label">Received By</label>
-                            <input type="text" class="form-control" id="receivedBy" placeholder="Enter name">
+                            <input type="text" class="form-control" id="receivedBy" name="receivedby" placeholder="Enter name">
                         </div>
                         
                         <div class="action-buttons">
                             <button type="button" class="btn btn-primary btn-custom" id="calculateBtn">Calculate Due</button>
-                            <button type="button" class="btn btn-success btn-custom" id="saveBtn">Save Receipt</button>
+                            <button type="submit" class="btn btn-success btn-custom" id="saveBtn">Save Receipt</button>
                             <button type="button" class="btn btn-info btn-custom" id="generatePdfBtn">Generate PDF</button>
                             <button type="reset" class="btn btn-secondary btn-custom">Reset Form</button>
                         </div>
@@ -249,15 +265,15 @@
                     <h3 class="mb-4">Receipt Preview</h3>
                     <div class="receipt-preview" id="receiptPreview">
                         <div class="receipt-header">
-                            <div class="receipt-logo">LOGO HERE TAGLINE</div>
+                            <div class="receipt-logo"><img src="logo.png" alt="" width="100px">
+                            <br><h3>Saravashray</h3></div>
                             <div class="receipt-contact">
-                                📞 0000-000000<br>
-                                📌 Your Mail Here
+                                📞  9955876455<br>
+                                ✉️ sarvashray1@gmail.com
                             </div>
+                             <div class="receipt-address">Registration No.: 20AZWPB5827D1ZK</div>
                             <div class="receipt-address">
-                                Company Name Here<br>
-                                Your Business Address 0000<br>
-                                Main Street, Unit 000C FEL, 0000
+                                 Lanka, Varanasi, Uttar Pradesh:221005<br>
                             </div>
                         </div>
                         
@@ -306,15 +322,17 @@
                         
                         <div class="receipt-amount-section">
                             <div class="receipt-detail-line">
-                                <span class="receipt-label">Amount = ______</span>
+                                <span class="receipt-label">Amount =</span>
+                                 <span id="previewPaidAmount">......</span>
                                 <span class="receipt-label" style="min-width: 120px;">Received by:</span>
                                 <span id="previewReceivedBy">......</span>
                             </div>
                         </div>
                         
                         <div class="receipt-signature">
-                            Authorized Signature
-                        </div>
+        <span style="font-family: 'Brush Script MT', cursive; font-size: 20px;">Sanjay Bhattcharay</span><br>
+        <strong>Authorized Signature</strong>
+    </div>
                     </div>
                 </div>
             </div>
@@ -345,6 +363,71 @@
             </div>
         </div>
     </div>
+<script>
+document.getElementById("receiptForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    // Get form data
+    const formData = new FormData(this);
+    const dataObject = {};
+    formData.forEach((value, key) => dataObject[key] = value);
+
+    // Save to localStorage (optional, for offline backup)
+    localStorage.setItem("formData", JSON.stringify(dataObject));
+
+    // Send to Google Sheets
+    fetch(this.action, { method: "POST", body: formData })
+        .then(res => res.json().catch(() => ({})))
+        .then(() => {
+            // ✅ After saving, auto-generate PDF
+            generatePDF();
+        })
+        .catch(err => {
+            alert("Submission failed.");
+            console.error(err);
+        });
+});
+
+// ✅ Your Generate PDF logic in a function
+function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('p', 'mm', 'a4');
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const receiptElement = document.getElementById('receiptPreview');
+
+    // Create temporary element for rendering
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = receiptElement.innerHTML;
+    tempElement.style.width = '180mm';
+    tempElement.style.padding = '15mm';
+    tempElement.style.fontFamily = 'Courier New, monospace';
+    tempElement.style.fontSize = '12pt';
+    tempElement.style.lineHeight = '1.4';
+    document.body.appendChild(tempElement);
+
+    html2canvas(tempElement, {
+        scale: 2,
+        useCORS: true,
+        logging: false
+    }).then(canvas => {
+        document.body.removeChild(tempElement);
+
+        const imgData = canvas.toDataURL('image/png');
+        const imgWidth = 180; // mm
+        const imgHeight = canvas.height * imgWidth / canvas.width;
+        const x = (pageWidth - imgWidth) / 2;
+
+        doc.addImage(imgData, 'PNG', x, 15, imgWidth, imgHeight);
+
+        // ✅ Auto-download with receipt ID or timestamp
+        const receiptId = document.getElementById('receiptId')?.value || Date.now();
+        doc.save(`receipt_${receiptId}.pdf`);
+    });
+}
+
+// ✅ If user clicks "Generate PDF" manually
+document.getElementById('generatePdfBtn').addEventListener('click', generatePDF);
+</script>
 
     <script>
         // Set default date to today
@@ -373,18 +456,24 @@
         
         // Function to update the receipt preview
         function updatePreview() {
-            document.getElementById('previewId').textContent = document.getElementById('receiptId').value || '......';
-            document.getElementById('previewDate').textContent = document.getElementById('date').value || '......';
-            document.getElementById('previewFrom').textContent = document.getElementById('receivedFrom').value || '......';
-            document.getElementById('previewAmount').textContent = document.getElementById('amount').value ? '$' + document.getElementById('amount').value : '......';
-            document.getElementById('previewWords').textContent = document.getElementById('amountInWords').value || '......';
-            document.getElementById('previewPurpose').textContent = document.getElementById('purpose').value || '......';
-            document.getElementById('previewBranch').textContent = document.getElementById('branch').value || '......';
-            document.getElementById('previewAcct').textContent = document.getElementById('account').value || '......';
-            document.getElementById('previewPaid').textContent = document.getElementById('paid').value || '......';
-            document.getElementById('previewDue').textContent = document.getElementById('due').value || '......';
-            document.getElementById('previewReceivedBy').textContent = document.getElementById('receivedBy').value || '......';
-        }
+    document.getElementById('previewId').textContent = document.getElementById('receiptId').value || '......';
+    document.getElementById('previewDate').textContent = document.getElementById('date').value || '......';
+    document.getElementById('previewFrom').textContent = document.getElementById('receivedFrom').value || '......';
+    document.getElementById('previewAmount').textContent = document.getElementById('amount').value ? '₹' + document.getElementById('amount').value : '......';
+    document.getElementById('previewWords').textContent = document.getElementById('amountInWords').value || '......';
+    document.getElementById('previewPurpose').textContent = document.getElementById('purpose').value || '......';
+    document.getElementById('previewBranch').textContent = document.getElementById('branch').value || '......';
+    document.getElementById('previewAcct').textContent = document.getElementById('account').value || '......';
+
+    // Paid in two places
+    let paidVal = document.getElementById('paid').value || '......';
+    document.getElementById('previewPaid').textContent = paidVal;
+    document.getElementById('previewPaidAmount').textContent ='₹'+ paidVal;
+
+    document.getElementById('previewDue').textContent = document.getElementById('due').value || '......';
+    document.getElementById('previewReceivedBy').textContent = document.getElementById('receivedBy').value || '......';
+}
+
         
         // Save receipt data
         document.getElementById('saveBtn').addEventListener('click', function() {
@@ -462,11 +551,7 @@
         });
         
         // Save to localStorage (simulating cloud storage)
-        function saveToLocalStorage(receiptData) {
-            let receipts = JSON.parse(localStorage.getItem('receipts')) || [];
-            receipts.push(receiptData);
-            localStorage.setItem('receipts', JSON.stringify(receipts));
-        }
+   
         
         // Update data table with saved receipts
         function updateDataTable() {
@@ -560,6 +645,39 @@
             updatePreview();
         });
     </script>
+    <script>
+    document.getElementById("amount").addEventListener("input", function () {
+        let amount = this.value;
+        document.getElementById("amountInWords").value = numberToWords(amount);
+    });
+
+    function numberToWords(num) {
+        if (num === "" || isNaN(num)) return "";
+
+        let a = [
+            "", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine",
+            "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen",
+            "Sixteen", "Seventeen", "Eighteen", "Nineteen"
+        ];
+        let b = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+
+        function inWords(n) {
+            if (n < 20) return a[n];
+            if (n < 100) return b[Math.floor(n / 10)] + (n % 10 ? " " + a[n % 10] : "");
+            if (n < 1000) return a[Math.floor(n / 100)] + " Hundred" + (n % 100 ? " " + inWords(n % 100) : "");
+            if (n < 100000) return inWords(Math.floor(n / 1000)) + " Thousand" + (n % 1000 ? " " + inWords(n % 1000) : "");
+            if (n < 10000000) return inWords(Math.floor(n / 100000)) + " Lakh" + (n % 100000 ? " " + inWords(n % 100000) : "");
+            return inWords(Math.floor(n / 10000000)) + " Crore" + (n % 10000000 ? " " + inWords(n % 10000000) : "");
+        }
+
+        let parts = num.toString().split(".");
+        let words = inWords(parseInt(parts[0]));
+        if (parts.length > 1 && parseInt(parts[1]) > 0) {
+            words += " and " + inWords(parseInt(parts[1])) + " Paise";
+        }
+        return words + " Only";
+    }
+</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </body>
 </html>
