@@ -265,7 +265,7 @@
                     <h3 class="mb-4">Receipt Preview</h3>
                     <div class="receipt-preview" id="receiptPreview">
                         <div class="receipt-header">
-                            <div class="receipt-logo"><img src="logo.png" alt="" width="100px">
+                            <div class="receipt-logo"><img src="logo.png" alt="Logo" width="100px" crossorigin="anonymous">
                             <br><h3>Saravashray</h3></div>
                             <div class="receipt-contact">
                                 📞  9955876455<br>
@@ -388,53 +388,48 @@ document.getElementById("receiptForm").addEventListener("submit", function (e) {
         });
 });
 
-       document.getElementById('generatePdfBtn').addEventListener('click', function() {
-            const { jsPDF } = window.jspdf;
-            
-            // Create a new PDF with appropriate dimensions for the receipt
-            const doc = new jsPDF('p', 'mm', 'a4');
-            const pageWidth = doc.internal.pageSize.getWidth();
-            
-            // Get the receipt preview element
-            const receiptElement = document.getElementById('receiptPreview');
-            
-            // Create a temporary element to style the receipt for PDF
-            const tempElement = document.createElement('div');
-            tempElement.innerHTML = receiptElement.innerHTML;
-            tempElement.style.width = '180mm';
-            tempElement.style.padding = '15mm';
-            tempElement.style.fontFamily = 'Courier New, monospace';
-            tempElement.style.fontSize = '12pt';
-            tempElement.style.lineHeight = '1.4';
-            document.body.appendChild(tempElement);
-            
-            // Use html2canvas to capture the receipt as an image
-            html2canvas(tempElement, {
-                scale: 2, // Higher scale for better quality
-                useCORS: true,
-                logging: false
-            }).then(canvas => {
-                // Remove temporary element
-                document.body.removeChild(tempElement);
-                
-                const imgData = canvas.toDataURL('image/png');
-                const imgWidth = 180; // mm
-                const imgHeight = canvas.height * imgWidth / canvas.width;
-                
-                // Center the receipt on the page
-                const x = (pageWidth - imgWidth) / 2;
-                
-                // Add image to PDF
-                doc.addImage(imgData, 'PNG', x, 15, imgWidth, imgHeight);
-                
-                // Save the PDF
-                doc.save('receipt_' + (document.getElementById('receiptId').value || 'unknown') + '.pdf');
-            });
-        });
+// ✅ Function for PDF generation
+function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('p', 'mm', 'a4');
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const receiptElement = document.getElementById('receiptPreview');
 
-// ✅ If user clicks "Generate PDF" manually
+    // Create a temporary styled element
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = receiptElement.innerHTML;
+    tempElement.style.width = '180mm';
+    tempElement.style.padding = '15mm';
+    tempElement.style.fontFamily = 'Courier New, monospace';
+    tempElement.style.fontSize = '12pt';
+    tempElement.style.lineHeight = '1.4';
+    document.body.appendChild(tempElement);
+
+    html2canvas(tempElement, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        ignoreElements: (el) => el.tagName === "IMG"
+    }).then(canvas => {
+        document.body.removeChild(tempElement);
+
+        const imgData = canvas.toDataURL('image/png');
+        const imgWidth = 180; // mm
+        const imgHeight = canvas.height * imgWidth / canvas.width;
+        const x = (pageWidth - imgWidth) / 2;
+
+        doc.addImage(imgData, 'PNG', x, 15, imgWidth, imgHeight);
+
+        // ✅ Save with ID or timestamp
+        const receiptId = document.getElementById('receiptId')?.value || Date.now();
+        doc.save('receipt_' + receiptId + '.pdf');
+    });
+}
+
+// ✅ Manual button click also calls same function
 document.getElementById('generatePdfBtn').addEventListener('click', generatePDF);
 </script>
+
 
     <script>
         // Set default date to today
@@ -513,49 +508,6 @@ document.getElementById('generatePdfBtn').addEventListener('click', generatePDF)
         });
         
         // Generate PDF
-        document.getElementById('generatePdfBtn').addEventListener('click', function() {
-            const { jsPDF } = window.jspdf;
-            
-            // Create a new PDF with appropriate dimensions for the receipt
-            const doc = new jsPDF('p', 'mm', 'a4');
-            const pageWidth = doc.internal.pageSize.getWidth();
-            
-            // Get the receipt preview element
-            const receiptElement = document.getElementById('receiptPreview');
-            
-            // Create a temporary element to style the receipt for PDF
-            const tempElement = document.createElement('div');
-            tempElement.innerHTML = receiptElement.innerHTML;
-            tempElement.style.width = '180mm';
-            tempElement.style.padding = '15mm';
-            tempElement.style.fontFamily = 'Courier New, monospace';
-            tempElement.style.fontSize = '12pt';
-            tempElement.style.lineHeight = '1.4';
-            document.body.appendChild(tempElement);
-            
-            // Use html2canvas to capture the receipt as an image
-            html2canvas(tempElement, {
-                scale: 2, // Higher scale for better quality
-                useCORS: true,
-                logging: false
-            }).then(canvas => {
-                // Remove temporary element
-                document.body.removeChild(tempElement);
-                
-                const imgData = canvas.toDataURL('image/png');
-                const imgWidth = 180; // mm
-                const imgHeight = canvas.height * imgWidth / canvas.width;
-                
-                // Center the receipt on the page
-                const x = (pageWidth - imgWidth) / 2;
-                
-                // Add image to PDF
-                doc.addImage(imgData, 'PNG', x, 15, imgWidth, imgHeight);
-                
-                // Save the PDF
-                doc.save('receipt_' + (document.getElementById('receiptId').value || 'unknown') + '.pdf');
-            });
-        });
         
         // Save to localStorage (simulating cloud storage)
    
